@@ -1,47 +1,47 @@
 #include <stdio.h>
+#define INF 999
+#define MAX 20
 
 void main()
 {
-    int cost[5][5] = {
-        {0, 2, 5, 1, 999},
-        {2, 0, 3, 2, 999},
-        {5, 3, 0, 3, 1},
-        {1, 2, 3, 0, 1},
-        {999, 999, 1, 1, 0}};
-
-    int dist[5];
-    int visited[5] = {0};
-
-    for (int i = 0; i < 5; i++)
+    int dist[MAX][MAX];
+    int n;
+    printf("Enter the number of nodes: ");
+    scanf("%d", &n);
+    printf("Enter the cost matrix (use 999 for no direct path):\n");
+    for (int i = 0; i < n; i++)
     {
-        dist[i] = cost[0][i];
-    }
-    visited[0] = 1;
-
-    for (int i = 0; i < 4; i++)
-    {
-        int min = 999, min_index;
-        for (int j = 0; j < 5; j++)
+        for (int j = 0; j < n; j++)
         {
-            if (!visited[j] && dist[j] < min)
-            {
-                min = dist[j];
-                min_index = j;
-            }
+            scanf("%d", &dist[i][j]);
         }
-        visited[min_index] = 1;
-        for (int j = 0; j < 5; j++)
+    }
+
+    for (int k = 0; k < n; k++) // intermediate node k
+    {
+        for (int i = 0; i < n; i++) // source node i
         {
-            if (!visited[j] && dist[min_index] + cost[min_index][j] < dist[j])
+            for (int j = 0; j < n; j++) // destination node j
             {
-                dist[j] = dist[min_index] + cost[min_index][j];
+                if (dist[i][k] + dist[k][j] < dist[i][j]) // check if path through k is shorter than direct path from i to j
+                {
+                    dist[i][j] = dist[i][k] + dist[k][j];
+                }
             }
         }
     }
-    printf("Shortest distances from node 0:\n");
-    for (int i = 0; i < 5; i++)
+
+    printf("Shortest path matrix:\n");
+    for (int i = 0; i < n; i++)
     {
-        printf("Node %d: %d\n", i, dist[i]);
+        for (int j = 0; j < n; j++)
+        {
+            if (dist[i][j] == INF)
+                printf("INF ");
+            else
+                printf("%d ", dist[i][j]);
+        }
+        printf("\n");
     }
 }
 
