@@ -24,9 +24,10 @@ void main()
     char buffer[BUF_SIZE];
     char filename[100];
 
+    socklen_t len = sizeof(client_addr);
+
     while (1)
     {
-        socklen_t len = sizeof(client_addr);
         recvfrom(sockfd, filename, 100, 0, (struct sockaddr *)&client_addr, &len);
         printf("Receiving file: %s\n", filename);
         FILE *file = fopen(filename, "wb");
@@ -34,7 +35,7 @@ void main()
         while (1)
         {
             int bytes = recvfrom(sockfd, buffer, BUF_SIZE, 0, (struct sockaddr *)&client_addr, &len);
-            if (strcmp(buffer, "ENDBRO") == 0)
+            if (strcmp(buffer, "END") == 0)
             {
                 printf("File received successfully.\n");
                 break;

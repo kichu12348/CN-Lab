@@ -4,8 +4,8 @@
 #include <unistd.h>
 #include <arpa/inet.h>
 
-const int BUF_SIZE = 1024;
 const int PORT = 8080;
+const int BUFFER_SIZE = 1024;
 
 void main()
 {
@@ -16,27 +16,29 @@ void main()
     server_addr.sin_family = AF_INET;
     server_addr.sin_addr.s_addr = inet_addr("127.0.0.1");
     server_addr.sin_port = htons(PORT);
-    char buffer[BUF_SIZE];
+
+    char buffer[BUFFER_SIZE];
     char filename[100];
+
+    socklen_t len = sizeof(server_addr);
 
     while (1)
     {
-        printf("Enter file to send: ");
+        memset(buffer, 0, BUFFER_SIZE);
+        printf("enter filename: ");
         scanf("%s", filename);
-        FILE *file = fopen(filename, "rb");
-        memset(buffer, 0, BUF_SIZE);
-        sendto(sockfd, filename, strlen(filename), 0, (struct sockaddr *)&server_addr, sizeof(server_addr));
-        int bytesRead;
-        while ((bytesRead = fread(buffer, 1, BUF_SIZE, file)) > 0)
-        {
-            sendto(sockfd, buffer, bytesRead, 0, (struct sockaddr *)&server_addr, sizeof(server_addr));
-        }
-        memset(buffer, 0, BUF_SIZE);
-        strcpy(buffer, "ENDBRO");
 
-        sendto(sockfd, buffer, strlen(buffer), 0, (struct sockaddr *)&server_addr, sizeof(server_addr));
-        printf("File sent successfully.\n");
-        fclose(file);
+        FILE *f = fopen(filename, "rb");
+
+        sendto(sockfd, filename, 100, 0, (struct sockaddr *)&server_addr, len);
+        int bytes;
+        while ((bytes = fread(buffer, 1, BUFFER_SIZE, f)) > 0)
+        {
+            sendto(sockfd, buffer, bytes, 0, (struct sockaddr *)&server_addr, len);
+        }
+        memset(buffer, 0, BUFFER_SIZE);
+        strcpy(buffer, "END");
+        sendto(sockfd, buffer, BUFFER_SIZE, 0, (struct sockaddr *)&server_addr, len);
+        fclose(f);
     }
-    close(sockfd);
 }
