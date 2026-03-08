@@ -1,48 +1,75 @@
 // link state routing
 #include <stdio.h>
+#define INF 999
+#define MAX 20
 
 void main()
 {
-    int cost[5][5] = {
-        {0, 2, 5, 1, 999},
-        {2, 0, 3, 2, 999},
-        {5, 3, 0, 3, 1},
-        {1, 2, 3, 0, 1},
-        {999, 999, 1, 1, 0}};
+    int cost[MAX][MAX];
+    int dist[MAX];
+    int visited[MAX] = {0};
+    int prev[MAX];
+    int n, source;
 
-    int dist[5];
-    int visited[5] = {0};
+    printf("Enter the number of nodes: ");
+    scanf("%d", &n);
 
-    for (int i = 0; i < 5; i++)
+    printf("Enter the cost matrix (use 999 for no direct path):\n");
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < n; j++)
+        {
+            scanf("%d", &cost[i][j]);
+        }
+    }
+
+    printf("Enter the source node: ");
+    scanf("%d", &source);
+
+    for (int i = 0; i < n; i++)
     {
         dist[i] = cost[0][i];
+        prev[i] = 0;
     }
-    visited[0] = 1;
 
-    for (int i = 0; i < 4; i++)
+    visited[source] = 1;
+
+    for (int i = 0; i < n - 1; i++)
     {
-        int min = 999, min_index;
-        for (int j = 0; j < 5; j++)
+        int min_dist = INF;
+        int min_idx = -1;
+        for (int j = 0; j < n; j++)
         {
-            if (!visited[j] && dist[j] < min)
+            if (!visited[j] && dist[j] < min_dist)
             {
-                min = dist[j];
-                min_index = j;
+                min_dist = dist[j];
+                min_idx = j;
             }
         }
-        visited[min_index] = 1;
-        for (int j = 0; j < 5; j++)
+
+        visited[min_idx] = 1;
+
+        for (int j = 0; j < n; j++)
         {
-            if (!visited[j] && dist[min_index] + cost[min_index][j] < dist[j])
+            if (!visited[j] && dist[min_idx] + cost[min_idx][j] < dist[j])
             {
-                dist[j] = dist[min_index] + cost[min_index][j];
+                dist[j] = dist[min_idx] + cost[min_idx][j];
+                prev[j] = min_idx;
             }
         }
     }
-    printf("Shortest distances from node 0:\n");
-    for (int i = 0; i < 5; i++)
+
+    int temp;
+    for (int i = 0; i < n; i++)
     {
-        printf("Node %d: %d\n", i, dist[i]);
+        printf("\n%d -> %d path taken: %d", source, i, i);
+        temp = i;
+        while (temp != source)
+        {
+            printf(" <- %d", prev[temp]);
+            temp = prev[temp];
+        }
+        printf("\nShortest distance from %d to %d: %d\n", source, i, dist[i]);
     }
 }
 
