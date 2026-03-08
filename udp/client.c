@@ -16,14 +16,15 @@ void main()
     server_addr.sin_family = AF_INET;
     server_addr.sin_addr.s_addr = inet_addr("127.0.0.1");
     server_addr.sin_port = htons(PORT);
+
     char buffer[BUF_SIZE];
 
     while (1)
     {
+        memset(buffer, 0, BUF_SIZE);
         printf("Enter message to send: ");
         fgets(buffer, BUF_SIZE, stdin);
-        memset(buffer, 0, BUF_SIZE);
-        fgets(buffer, BUF_SIZE, stdin);
+
         sendto(sockfd, buffer, strlen(buffer), 0, (struct sockaddr *)&server_addr, sizeof(server_addr));
         if (strcmp(buffer, "exit") == 0)
         {
