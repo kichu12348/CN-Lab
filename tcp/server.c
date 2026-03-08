@@ -57,9 +57,9 @@ void main()
     printf("Client connected\n");
     while (1)
     {
-        memset(buffer, 0, BUFFER_SIZE);                           // clear the buffer
-        int bytes_read = recv(client_fd, buffer, BUFFER_SIZE, 0); // read data from the client
-        if (bytes_read <= 0 || strcmp(buffer, "exit\n") == 0)
+        memset(buffer, 0, BUFFER_SIZE);          // clear the buffer
+        recv(client_fd, buffer, BUFFER_SIZE, 0); // read data from the client
+        if (strcmp(buffer, "exit\n") == 0)
         {
             printf("Client disconnected\n");
             break; // client disconnected
