@@ -37,8 +37,9 @@ void main()
 
     for (int i = 0; i < n - 1; i++)
     {
-        int min_dist = INF;
+        int min_dist = 999;
         int min_idx = -1;
+        // FIND the node with the smallest distance from the source node that has not been visited yet
         for (int j = 0; j < n; j++)
         {
             if (!visited[j] && dist[j] < min_dist)
@@ -48,8 +49,9 @@ void main()
             }
         }
 
-        visited[min_idx] = 1;
+        visited[min_idx] = 1; // Mark the node with the smallest distance as visited
 
+        // Update the distances to the neighboring nodes of the newly visited node
         for (int j = 0; j < n; j++)
         {
             if (!visited[j] && dist[min_idx] + cost[min_idx][j] < dist[j])
@@ -68,7 +70,7 @@ void main()
         while (temp != source)
         {
             printf(" <- %d", prev[temp]);
-            temp = prev[temp];
+            temp = prev[temp]; // 0 -> 1 path taken: 1 <- 0
         }
         printf("\nShortest distance from %d to %d: %d\n", source, i, dist[i]);
     }
