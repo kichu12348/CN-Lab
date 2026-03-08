@@ -28,17 +28,20 @@ void main()
         printf("enter filename: ");
         scanf("%s", filename);
 
-        FILE *f = fopen(filename, "rb");
+        FILE *file = fopen(filename, "rb");
 
         sendto(sockfd, filename, 100, 0, (struct sockaddr *)&server_addr, len);
-        int bytes;
-        while ((bytes = fread(buffer, 1, BUFFER_SIZE, f)) > 0)
+
+        while (1)
         {
+            int bytes = fread(buffer, 1, BUFFER_SIZE, file);
+            if (bytes == 0)
+                break;
             sendto(sockfd, buffer, bytes, 0, (struct sockaddr *)&server_addr, len);
         }
         memset(buffer, 0, BUFFER_SIZE);
         strcpy(buffer, "END");
         sendto(sockfd, buffer, BUFFER_SIZE, 0, (struct sockaddr *)&server_addr, len);
-        fclose(f);
+        fclose(file);
     }
 }
