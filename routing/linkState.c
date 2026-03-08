@@ -28,8 +28,8 @@ void main()
 
     for (int i = 0; i < n; i++)
     {
-        dist[i] = cost[0][i];
-        prev[i] = 0;
+        dist[i] = cost[source][i];
+        prev[i] = source;
     }
 
     visited[source] = 1;
