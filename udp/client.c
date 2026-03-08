@@ -25,8 +25,8 @@ void main()
         printf("Enter message to send: ");
         fgets(buffer, BUF_SIZE, stdin);
 
-        sendto(sockfd, buffer, strlen(buffer), 0, (struct sockaddr *)&server_addr, sizeof(server_addr));
-        if (strcmp(buffer, "exit") == 0)
+        sendto(sockfd, buffer, BUF_SIZE, 0, (struct sockaddr *)&server_addr, sizeof(server_addr));
+        if (strcmp(buffer, "exit\n") == 0)
         {
             printf("Exiting client.\n");
             break;
