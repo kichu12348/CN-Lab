@@ -7,7 +7,7 @@ void main()
 {
     int cost[MAX][MAX];
     int dist[MAX];
-    int visited[MAX] = {0};
+    int visited[MAX];
     int prev[MAX];
     int n, source;
 
@@ -30,6 +30,7 @@ void main()
     {
         dist[i] = cost[source][i];
         prev[i] = source;
+        visited[i] = 0;
     }
 
     visited[source] = 1;
