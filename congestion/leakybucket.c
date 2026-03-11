@@ -53,6 +53,17 @@ int main()
 
         printf("Packets remaining in bucket: %d\n", bucket);
     }
+    
+    while (bucket != 0){
+        if (bucket>=out_rate) {
+            bucket-=out_rate;
+            printf("%d packets sent.\n", out_rate);
+        }
+        else {
+            printf("%d packets sent.\n", bucket);
+            bucket=0;
+        }
+    }
 
     return 0;
 }
