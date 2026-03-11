@@ -68,7 +68,7 @@ void main()
         printf("Enter a message to send back to the client (or 'exit' to disconnect): ");
         memset(buffer, 0, BUFFER_SIZE);         // clear the buffer before reading input
         fgets(buffer, BUFFER_SIZE, stdin);      // read a message from the user
-        send(client_fd, buffer, bytes_read, 0); // echo the data back to the client
+        send(client_fd, buffer, BUFFER_SIZE, 0); // echo the data back to the client
     }
 
     close(client_fd); // close the client socket
