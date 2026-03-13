@@ -7,6 +7,17 @@
 const int PORT = 8080;
 const int BUFFER_SIZE = 1024;
 
+int file_exists(const char *filename)
+{
+    FILE *file = fopen(filename, "r");
+    if (file)
+    {
+        fclose(file);
+        return 1;
+    }
+    return 0;
+}
+
 void main()
 {
     int sockfd = socket(AF_INET, SOCK_DGRAM, 0);
