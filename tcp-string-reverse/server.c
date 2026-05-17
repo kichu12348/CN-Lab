@@ -7,7 +7,6 @@
 const int BUFFER_SIZE = 1024;
 
 const int PORT = 8080;
-//// kukkududuvava <-
 
 void reverseString(char buff1[], char buff2[])
 {
