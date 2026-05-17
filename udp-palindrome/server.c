@@ -8,6 +8,23 @@
 const int BUFFER_SIZE = 1024;
 const int PORT = 3000;
 
+int is_palindrome(char buffer[])
+{
+    int left = 0;
+    int right = strlen(buffer) - 1;
+
+    while (left < right)
+    {
+        if (buffer[left] != buffer[right])
+        {
+            return 0; // Not a palindrome
+        }
+        left++;
+        right--;
+    }
+    return 1; // Is a palindrome
+}
+
 void main()
 {
 
@@ -33,31 +50,7 @@ void main()
         // read the message recived from client and put it in buffer
         recvfrom(s_fd, buffer, BUFFER_SIZE, 0, (struct sockaddr *)&c_addr, &len);
 
-        int len_of_str = strlen(buffer);
-
-        int i = 0, j = len_of_str - 1;
-
-        int is_pali = 1;
-
-        while (j >= i)
-        {
-            // i and j are pointers on either ends of the word
-            // i starts from the left and moves right and j starts from right and moves left
-            // compare each character on the pointers if they are not equal that means the word
-            // is not a palindrome
-
-            if (buffer[i] != buffer[j])
-            {
-                is_pali = 0;
-                break;
-            }
-
-            // move i to right by 1 i.e i = i + 1;
-            i++;
-
-            // move j to left by 1 i.e j = j - 1;
-            j--;
-        }
+        int is_pali = is_palindrome(buffer);
 
         memset(buffer, 0, BUFFER_SIZE); // CLEAR THE buffer
 
