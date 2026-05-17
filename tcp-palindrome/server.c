@@ -46,7 +46,7 @@ void main()
 
     char buffer[BUFFER_SIZE];
 
-    client_fd = accept(server_fd, (struct sockaddr *)&server_addr, &len);
+    client_fd = accept(server_fd, NULL, NULL);
 
     printf("Client connected.\n");
 
